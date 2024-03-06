@@ -1,0 +1,32 @@
+eureka:
+  client:
+    registerWithEureka: false
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      mvc:
+        routes:
+          - id: portals
+            uri: http://localhost:8870
+            predicates:
+              - path=/api/v1/portals/**
+          - id: clients
+            uri: http://localhost:8890
+            predicates:
+              - path=/api/v1/clients/**
+
+
+server:
+  port: 8222
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
