@@ -26,6 +26,10 @@ The system is composed of the following services:
 *   **Containerized Infrastructure** using Docker Compose (PostgreSQL, PGAdmin, Zipkin).
 *   **Database per Service Pattern** implemented with separate databases for the Client and Portal services.
 
+## Local infrastructure notes
+
+Read [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) before starting Docker Compose, especially if you already have a PostgreSQL volume.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
