@@ -1,0 +1,20 @@
+name: Verify local infrastructure
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  databases:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: docker compose config --quiet
+      - run: docker compose up -d --wait --wait-timeout 90 postgresql
+      - name: Verify both service databases
+        run: |
+          docker compose exec -T postgresql psql -U postgres -d clients -v ON_ERROR_STOP=1 -c 'SELECT 1;'
+          docker compose exec -T postgresql psql -U postgres -d portals -v ON_ERROR_STOP=1 -c 'SELECT 1;'
+      - if: failure()
+        run: docker compose logs postgresql
+      - if: always()
+        run: docker compose down --volumes
